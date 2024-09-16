@@ -1,36 +1,25 @@
 import { Component, Input, Output, EventEmitter} from '@angular/core';
-
-// type User = {
-//   id: string,
-//   name: string,
-//   avatar: string,
-// }
-
-// as above, same below. different way of doing the same thing.
-// interface is of type object only.
-
-interface User {
-  id: string,
-  name: string,
-  avatar: string,
-}
+import { User } from './user.model';
+import { CardComponent } from "../shared/card/card.component"; // Import "User" type.
 
 @Component({
   selector: 'app-user',
   standalone: true,
   templateUrl: './user.component.html',
   styleUrls: ['./user.component.css'],
+  imports: [CardComponent],
 })
 
 export class UserComponent {
   @Input({ required: true }) user!: User;
-  @Output() select = new EventEmitter<string>();
+  @Input({ required: true }) selected!: boolean;
+  @Output() emitUserSelected = new EventEmitter<string>();
 
   get imagePath() {
     return '/assets/users/' + this.user.avatar;
   }
 
   onSelectUser() {
-    this.select.emit(this.user.id);
+    this.emitUserSelected.emit(this.user.id);
   }
 }
